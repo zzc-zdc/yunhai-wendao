@@ -1,5 +1,7 @@
 # 云海问道
 
+[立即游玩](https://zzc-zdc.github.io/yunhai-wendao/) · [完整源码仓库](https://github.com/zzc-zdc/yunhai-wendao) · [五轮自检报告](docs/QA.md)
+
 一款完整可运行的东方修仙 Canvas 2D 浏览器游戏。五境修行、十五门主动神通、三大区域、首领与共享掉落、炼器炼丹，以及无需玩家注册的 2–4 人房间联机。所有场景、角色与战斗特效均由程序绘制。
 
 默认用 PeerJS 公共 WebSocket 信令服务建立 WebRTC 数据通道；朋友只需打开网址，输入房间号。配置公开 key 后可切换为 `@gamerelay/sdk`。静态站点不需要自建游戏服务器。
@@ -31,6 +33,7 @@ npx playwright install chromium
 npm run test:browser
 node tests/network.mjs
 node tests/network-edge.mjs
+node tests/production.mjs  # 直接检查已经部署的公开版本
 ```
 
 `tests/network*.mjs` 会使用真实公共信令服务，必须联网。测试生成截图和 JSON 记录到 `artifacts/`，不进入 Git。浏览器测试中的成长与失败场景通过开发专用检查接口构造条件，再用真实界面触发和验证；基础移动、御剑、打怪与掉落有真实输入测试。生产构建不暴露这个接口。
@@ -143,7 +146,11 @@ yunhai-wendao/
 ├── package.json / package-lock.json
 ├── vite.config.js               # 相对部署路径
 ├── .env.example
+├── .gitattributes / .gitignore
+├── .prettierrc.json / .prettierignore
 ├── .github/workflows/pages.yml
+├── public/THIRD_PARTY_NOTICES.txt # 随静态成品发布的许可声明
+├── scripts/source-bundle.mjs    # 按文件生成完整源码文档
 ├── src/
 │   ├── config.js                # 所有平衡参数与限额
 │   ├── math.js                  # PRNG、固定步长累加器、碰撞数学
@@ -161,6 +168,7 @@ yunhai-wendao/
 │   ├── browser.mjs
 │   ├── network.mjs
 │   ├── network-edge.mjs
+│   ├── production.mjs
 │   └── smoke.mjs
 ├── docs/QA.md                   # 五轮自检、修复与证据
 ├── docs/ARCHITECTURE.md
@@ -180,6 +188,8 @@ yunhai-wendao/
 - 区域是三张有边界的探索场景；植被、石桥与地表是美术地物，不设置复杂地形碰撞。触屏提供基本控制，主要验证平台为桌面 Chromium；没有实机 iOS/Android 全机型验证。
 
 详细检查与未验证范围见 [五轮自检报告](docs/QA.md)。不能据此宣称绝对零 Bug。
+
+源码已经格式化，可用 `npm run check:format` 检查，或 `npm run format` 整理。执行 `node scripts/source-bundle.mjs` 会把 Git 跟踪的全部文本文件逐个完整写入 `artifacts/完整源码.md`。
 
 ## 资料与许可证
 

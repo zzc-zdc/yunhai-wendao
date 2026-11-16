@@ -103,4 +103,12 @@
 
 已检查路径中未发现仍未修复、可复现的阻断性问题；不宣称绝对零 Bug。明确保留的限制是公共信令/NAT 可达性、未配置的 GameRelay 实服验证、房主离开关闭房间、本地存档无防作弊、高延迟位置校正，以及桌面优先的三张 2D 场景。原因和规避方式完整列在 [README](../README.md#已知限制)。
 
-部署 URL、CI 结果和生产环境复测记录见发布时追加的「部署验收」段落。
+## 部署验收 · 已完成
+
+- 公网地址：[https://zzc-zdc.github.io/yunhai-wendao/](https://zzc-zdc.github.io/yunhai-wendao/)。
+- 源码仓库：[zzc-zdc/yunhai-wendao](https://github.com/zzc-zdc/yunhai-wendao)。
+- 已部署的游戏代码提交：`9bdee3b66cdf0a1ec52804f23e571a75028fb269`。后续提交仅补充本验收记录、README 和生产测试脚本，不改变已验收游戏代码。
+- [GitHub Actions 构建与部署](https://github.com/zzc-zdc/yunhai-wendao/actions/runs/43858167192) 已成功：干净安装 `npm ci`、15 个模拟测试、构建、Pages artifact 上传与发布。
+- `tests/production.mjs` 在这个正式 HTTPS 地址通过六项验收：HTTP 200 和生产包；四人房间号/邀请链接加入；客机技能收到权威冷却；聊天同步；房主退出后全部客机保留可玩单机；无未捕获浏览器错误。
+- 已确认生产环境没有 `window.__game` 开发检查接口，邀请 URL 保留 `/yunhai-wendao/` 子目录，未出现静态路由 404。
+- 证据文件：`artifacts/production-results.json`、`production-title.png`、`production-room.png`、`production-game.png`。本地完整检查结果另存 `browser-results.json`、`network-results.json`、`network-edge-results.json`，可通过对应脚本重新生成。
