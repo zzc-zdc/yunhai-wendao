@@ -1,0 +1,24 @@
+{
+  "name": "yunhai-wendao",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test tests/simulation.test.js",
+    "test:browser": "node tests/browser.mjs",
+    "format": "prettier --write .",
+    "check:format": "prettier --check ."
+  },
+  "dependencies": {
+    "@gamerelay/sdk": "0.1.0-alpha.17",
+    "peerjs": "1.5.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "prettier": "3.10.1",
+    "vite": "6.4.6"
+  }
+}

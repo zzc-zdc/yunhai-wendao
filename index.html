@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#102a2c" />
+    <meta
+      name="description"
+      content="云海问道：无需注册的浏览器修仙联机游戏。执剑入云海，与三两道友共问长生。"
+    />
+    <title>云海问道 · 与君共赴长生</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='12' width='64' height='64' fill='%23163030'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-size='43' fill='%23e5d1a3'%3E道%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <canvas id="world" aria-label="云海问道游戏场景"></canvas>
+    <div id="loading">
+      <span class="seal">道</span>
+      <p>山海将醒</p>
+      <small>正在铺开云海画卷…</small>
+    </div>
+    <section id="title-screen" class="hidden">
+      <header class="title-top">
+        <a class="wordmark" href="./"><span class="seal small">道</span> 云海问道 <i>YUNHAI</i></a
+        ><span class="edition">山 海 初 卷 <b>01</b></span>
+      </header>
+      <div class="title-shade"></div>
+      <main class="title-content">
+        <div class="eyebrow"><span></span> AN ODYSSEY BEYOND THE CLOUDS</div>
+        <h1>云海<span>问道</span><i class="title-stamp">一念长生</i></h1>
+        <p class="title-verse">执剑入山海，与君问长生。</p>
+        <p class="title-description">
+          从一缕灵气，到万象归一。<br />踏过青篁，行过赤焰，在星渊深处寻你的道。
+        </p>
+        <label class="name-field"
+          ><span>道号</span
+          ><input
+            id="player-name"
+            maxlength="12"
+            placeholder="云游客"
+            autocomplete="nickname"
+            aria-label="道号"
+          /><i>无需注册 · 修为自动保存</i></label
+        >
+        <div class="title-actions">
+          <button id="solo-btn" class="primary">踏入云海 <span>→</span></button
+          ><button id="create-btn" class="secondary">开辟洞天 <small>2–4 人联机</small></button>
+        </div>
+        <form id="join-form" class="join-form">
+          <input
+            id="room-input"
+            maxlength="180"
+            placeholder="输入 6 位房间号 / 邀请链接"
+            aria-label="房间号"
+            autocomplete="off"
+          /><button type="submit">入 队 <span>↗</span></button>
+        </form>
+        <p id="title-status" class="status-text" role="status">
+          WASD 行走 · 鼠标御剑 · 1 / 2 / 3 施法
+        </p>
+      </main>
+      <div class="title-poem">
+        心<br />有<br />山<br />海<span></span>道<br />无<br />止<br />境
+      </div>
+      <footer class="title-footer">
+        <span>序章 · 灵泉初醒</span>
+        <div>青篁渡 <em>—</em> 赤焰墟 <em>—</em> 星渊秘境</div>
+        <button data-action="help">修行指南 <span>↗</span></button>
+      </footer>
+    </section>
+    <div id="game-ui" class="hidden">
+      <header class="hud-top">
+        <section class="vitals">
+          <div class="avatar-seal" id="realm-glyph">气</div>
+          <div class="vital-content">
+            <div class="identity">
+              <strong id="hud-name">云游客</strong><span id="hud-realm">炼气 · 初窥大道</span>
+            </div>
+            <div class="meter hp">
+              <div id="hp-fill"></div>
+              <span id="hp-label"></span>
+            </div>
+            <div class="meter mana">
+              <div id="mana-fill"></div>
+              <span id="mana-label"></span>
+            </div>
+          </div>
+        </section>
+        <div class="region">
+          <span class="region-line"></span><small id="region-en">THE JADE WILDS</small>
+          <h2 id="region-name">青篁渡</h2>
+          <p id="region-epithet">竹影藏风 · 灵泉初醒</p>
+        </div>
+        <div class="top-actions">
+          <div class="wealth"><span>◈</span> <b id="coins">100</b><small>灵石</small></div>
+          <button class="team-button" data-action="team">
+            <span class="online-dot"></span><span id="team-label">结伴同行</span
+            ><kbd>T</kbd></button
+          ><button class="icon-button" data-action="settings" title="设置" aria-label="设置">
+            ☷
+          </button>
+        </div>
+      </header>
+      <aside class="journey">
+        <div class="mini-heading"><i>一</i> <span id="quest-title">初窥大道</span></div>
+        <p id="quest-text">修炼聚灵，斩妖寻材</p>
+        <div class="xp-track"><div id="xp-fill"></div></div>
+        <div class="xp-caption">
+          <span id="xp-text"></span><button data-action="breakthrough">突破 <kbd>B</kbd></button>
+        </div>
+        <div id="party-list"></div>
+      </aside>
+      <aside class="map-widget">
+        <div class="map-frame">
+          <canvas id="minimap" width="360" height="260" aria-label="区域小地图"></canvas>
+          <div class="map-north">北</div>
+        </div>
+        <button data-action="map"><span>山海舆图</span><kbd>M</kbd></button
+        ><small>金色古碑可参悟 · F</small>
+      </aside>
+      <div id="zone-banner" class="zone-banner hidden">
+        <small></small><strong></strong><span></span>
+      </div>
+      <div id="pause-banner" class="pause-banner hidden"></div>
+      <div id="practice-label" class="practice-label hidden">
+        <span>◌</span> 吐纳中 · 修为流转 <small>移动即收息</small>
+      </div>
+      <div id="toasts" aria-live="polite"></div>
+      <footer class="hud-bottom">
+        <div class="movement-hint">
+          <span>W A S D</span> 行走 <i>·</i> 鼠标左键 御剑 <i>·</i> 空格 闪身
+        </div>
+        <div id="skillbar" class="skillbar"></div>
+        <div class="utilities">
+          <button data-command="practice" id="practice-btn">
+            <span>◌</span><b>修炼</b><kbd>C</kbd></button
+          ><button data-action="shop"><span>鼎</span><b>坊市</b><kbd>E</kbd></button
+          ><button data-command="potion">
+            <span>丹</span><b id="potion-label">回春散 ×3</b><kbd>H</kbd>
+          </button>
+        </div>
+        <div class="diagnostics">
+          <span id="network-indicator">独行</span><span id="fps">60 FPS</span
+          ><span id="save-label">已存档</span><button data-action="help" title="修行指南">?</button>
+        </div>
+      </footer>
+      <div id="touch-controls">
+        <div id="joystick"><span></span></div>
+        <button id="touch-attack">御剑</button><button data-command="dash">闪身</button>
+      </div>
+    </div>
+    <div id="modal-overlay" class="modal-overlay hidden">
+      <section
+        id="modal"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <header>
+          <div>
+            <small id="modal-eyebrow">YUNHAI · WENDAO</small>
+            <h2 id="modal-title"></h2>
+          </div>
+          <button id="modal-close" class="icon-button" aria-label="关闭">×</button>
+        </header>
+        <div id="modal-body"></div>
+      </section>
+    </div>
+    <div id="fatal" class="hidden">
+      <h2>画卷暂未展开</h2>
+      <p id="fatal-text"></p>
+      <button onclick="location.reload()">重新载入</button>
+    </div>
+    <noscript>云海问道需要启用 JavaScript。请在浏览器设置中启用 JavaScript 后刷新。</noscript>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
